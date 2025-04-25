@@ -9,9 +9,7 @@ export default function EditPost() {
   const [content, setContent] = useState('')
   const [imageUrl, setImageUrl] = useState('')
 
-  useEffect(() => {
-    loadPost()
-  }, [])
+  useEffect(() => { loadPost() }, [])
 
   async function loadPost() {
     const { data } = await supabase.from('posts').select('*').eq('id', id).single()
@@ -29,33 +27,20 @@ export default function EditPost() {
   }
 
   return (
-    <div className="p-4">
-      <h1 className="text-2xl mb-4">Edit Post</h1>
-      <form onSubmit={handleSubmit} className="space-y-4">
+    <div>
+      <h1>Edit Post</h1>
+      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
         <div>
-          <label className="block">Title</label>
-          <input
-            value={title}
-            onChange={e => setTitle(e.target.value)}
-            required
-            className="input w-full"
-          />
+          <label>Title</label>
+          <input value={title} onChange={e => setTitle(e.target.value)} required className="input" />
         </div>
         <div>
-          <label className="block">Content</label>
-          <textarea
-            value={content}
-            onChange={e => setContent(e.target.value)}
-            className="textarea w-full"
-          />
+          <label>Content</label>
+          <textarea value={content} onChange={e => setContent(e.target.value)} className="textarea" />
         </div>
         <div>
-          <label className="block">Image URL</label>
-          <input
-            value={imageUrl}
-            onChange={e => setImageUrl(e.target.value)}
-            className="input w-full"
-          />
+          <label>Image URL</label>
+          <input value={imageUrl} onChange={e => setImageUrl(e.target.value)} className="input" />
         </div>
         <button type="submit" className="btn">Save Changes</button>
       </form>

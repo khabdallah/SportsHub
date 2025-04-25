@@ -37,12 +37,12 @@ export default function PostDetail() {
   if (!post) return <div>Loading...</div>
 
   return (
-    <div className="p-4">
-      <h1 className="text-3xl mb-2">{post.title}</h1>
-      <p className="text-sm text-gray-500 mb-4">{new Date(post.created_at).toLocaleString()}</p>
-      {post.image_url && <img src={post.image_url} alt="Post" className="mb-4 max-w-full" />}
-      <p className="mb-4">{post.content}</p>
-      <div className="flex items-center space-x-2 mb-4">
+    <div>
+      <h1>{post.title}</h1>
+      <div className="timestamp">{new Date(post.created_at).toLocaleString()}</div>
+      {post.image_url && <img src={post.image_url} alt="Post" style={{ maxWidth: '100%', margin: '1rem 0' }} />}
+      <p>{post.content}</p>
+      <div style={{ display: 'flex', gap: '1rem', margin: '1rem 0' }}>
         <UpvoteButton post={post} setPost={setPost} />
         <Link to={`/edit/${id}`} className="btn">Edit</Link>
         <button onClick={handleDelete} className="btn btn-danger">Delete</button>

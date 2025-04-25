@@ -17,31 +17,18 @@ export default function CreatePost() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
       <div>
-        <label className="block">Title</label>
-        <input
-          value={title}
-          onChange={e => setTitle(e.target.value)}
-          required
-          className="input w-full"
-        />
+        <label>Title</label>
+        <input value={title} onChange={e => setTitle(e.target.value)} required className="input" />
       </div>
       <div>
-        <label className="block">Content</label>
-        <textarea
-          value={content}
-          onChange={e => setContent(e.target.value)}
-          className="textarea w-full"
-        />
+        <label>Content</label>
+        <textarea value={content} onChange={e => setContent(e.target.value)} className="textarea" />
       </div>
       <div>
-        <label className="block">Image URL</label>
-        <input
-          value={imageUrl}
-          onChange={e => setImageUrl(e.target.value)}
-          className="input w-full"
-        />
+        <label>Image URL</label>
+        <input value={imageUrl} onChange={e => setImageUrl(e.target.value)} className="input" />
       </div>
       <button type="submit" className="btn">Post</button>
     </form>

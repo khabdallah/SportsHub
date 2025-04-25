@@ -13,32 +13,27 @@ export default function Home() {
   }, [search, sort])
 
   async function fetchPosts() {
-    let query = supabase.from('posts').select('*')
-      .order(sort, { ascending: false })
-    if (search) {
-      query = query.ilike('title', `%${search}%`)
-    }
+    let query = supabase.from('posts').select('*').order(sort, { ascending: false })
+    if (search) query = query.ilike('title', `%${search}%`)
     const { data, error } = await query
     if (!error) setPosts(data)
   }
 
   return (
-    <div className="p-4">
-      <div className="flex items-center justify-between mb-4">
-        <Link to="/create" className="btn">Create Post</Link>
-        <div className="flex space-x-2">
-          <input
-            type="text"
-            placeholder="Search titles..."
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-            className="input"
-          />
-          <select value={sort} onChange={e => setSort(e.target.value)} className="select">
-            <option value="created_at">Newest</option>
-            <option value="upvotes">Top</option>
-          </select>
-        </div>
+    <div>
+      <div className="search-sort">
+        <Link to="/create" className="btn">+ New Post</Link>
+        <input
+          type="text"
+          placeholder="Search titles..."
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+          className="input"
+        />
+        <select value={sort} onChange={e => setSort(e.target.value)} className="input">
+          <option value="created_at">Newest</option>
+          <option value="upvotes">Top</option>
+        </select>
       </div>
       <PostList posts={posts} />
     </div>

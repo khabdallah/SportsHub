@@ -3,8 +3,8 @@ import CreatePost from '../components/CreatePost'
 
 export default function Create() {
   return (
-    <div className="p-4">
-      <h1 className="text-2xl mb-4">New Post</h1>
+    <div>
+      <h1>New Sports Post</h1>
       <CreatePost />
     </div>
   )

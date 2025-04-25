@@ -12,16 +12,15 @@ export default function CommentForm({ postId, onNewComment }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-2">
+    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
       <textarea
         value={content}
         onChange={e => setContent(e.target.value)}
         required
         placeholder="Add a comment..."
-        className="textarea w-full"
+        className="textarea"
       />
       <button type="submit" className="btn">Comment</button>
     </form>
   )
 }
-    
