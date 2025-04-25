@@ -1,22 +1,33 @@
-import React, { useState } from 'react'
-import { supabase } from '../supabaseClient'
+// src/components/UpvoteButton.jsx
+import React from 'react';
+import { supabase } from '../supabaseClient';
 
-export default function UpvoteButton({ post, setPost }) {
-  const [loading, setLoading] = useState(false)
+export default function UpvoteButton({ postId, currentCount, onUpvoted }) {
+  const handleClick = async (e) => {
+    e.preventDefault();
 
-  async function handleUpvote() {
-    setLoading(true)
-    const { data } = await supabase.from('posts')
-      .update({ upvotes: post.upvotes + 1 })
-      .eq('id', post.id)
-      .single()
-    setPost(data)
-    setLoading(false)
-  }
+    const { data, error, status } = await supabase
+      .from('posts')
+      .update({ upvotes: currentCount + 1 })
+      .eq('id', postId)
+      .select()        // ← request the updated row
+      .single();      // ← assert exactly one row comes back
+
+    if (error) {
+      console.error('Upvote error:', error);
+    } else {
+      // status will now be 200, and `data` is the updated post object
+      onUpvoted(data);
+    }
+  };
 
   return (
-    <button onClick={handleUpvote} disabled={loading} className="btn">
-      👍 {post.upvotes}
+    <button
+      type="button"
+      className="upvote-button"
+      onClick={handleClick}
+    >
+      ▲ {currentCount}
     </button>
-  )
+  );
 }

@@ -1,41 +1,55 @@
-import React, { useState, useEffect } from 'react'
-import { supabase } from '../supabaseClient'
-import PostList from '../components/PostList'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useState } from 'react';
+import { supabase } from '../supabaseClient';
+import PostCard from '../components/PostCard';
 
 export default function Home() {
-  const [posts, setPosts] = useState([])
-  const [search, setSearch] = useState('')
-  const [sort, setSort] = useState('created_at')
+  const [posts, setPosts]     = useState([]);
+  const [search, setSearch]   = useState('');
+  const [sortField, setSortField] = useState('created_at');
+
+  const fetchPosts = async () => {
+    const { data, error } = await supabase
+      .from('posts')
+      .select('*')
+      .ilike('title', `%${search}%`)
+      // ALWAYS descending order so "Newest" = newest-first and "Most Upvoted" = highest-first
+      .order(sortField, { ascending: false });
+
+    if (error) {
+      console.error('Error fetching posts:', error);
+    } else {
+      setPosts(data);
+    }
+  };
 
   useEffect(() => {
-    fetchPosts()
-  }, [search, sort])
-
-  async function fetchPosts() {
-    let query = supabase.from('posts').select('*').order(sort, { ascending: false })
-    if (search) query = query.ilike('title', `%${search}%`)
-    const { data, error } = await query
-    if (!error) setPosts(data)
-  }
+    fetchPosts();
+  }, [search, sortField]);
 
   return (
-    <div>
-      <div className="search-sort">
-        <Link to="/create" className="btn">+ New Post</Link>
+    <div className="page-container">
+      <div className="controls">
         <input
           type="text"
-          placeholder="Search titles..."
+          placeholder="Search posts…"
           value={search}
           onChange={e => setSearch(e.target.value)}
-          className="input"
         />
-        <select value={sort} onChange={e => setSort(e.target.value)} className="input">
+        <select value={sortField} onChange={e => setSortField(e.target.value)}>
           <option value="created_at">Newest</option>
-          <option value="upvotes">Top</option>
+          <option value="upvotes">Most Upvoted</option>
         </select>
       </div>
-      <PostList posts={posts} />
+
+      <div className="feed">
+        {posts.map(post => (
+          <PostCard
+            key={post.id}
+            post={post}
+            onUpvote={fetchPosts}
+          />
+        ))}
+      </div>
     </div>
-  )
+  );
 }

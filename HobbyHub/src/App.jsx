@@ -4,6 +4,7 @@ import Home from './pages/Home'
 import Create from './pages/Create'
 import PostDetail from './pages/PostDetail'
 import EditPost from './pages/EditPost'
+import './App.css'
 
 export default function App() {
   return (
